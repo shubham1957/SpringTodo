@@ -21,15 +21,14 @@ public class TodoController {
 
     @GetMapping
     //- @ResponseStatus--Method 1
-    public ResponseEntity<ArrayList<Todo>> getBooksList() {
-
-        return ResponseEntity.ok(todoList); // method 2
-
+    public ResponseEntity<ArrayList<Todo>> getTodos(@RequestParam(required = false) Boolean isCompleted) {
+        System.out.println("Incoming query params: " + isCompleted);
+        return ResponseEntity.ok(todoList);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED) //
-    public ResponseEntity<Todo> createBook(@RequestBody Todo newBook) {
+    public ResponseEntity<Todo> createBook(@RequestBody Todo newBook) { // @requestBody for body params
         todoList.add(newBook);
         return ResponseEntity.status(HttpStatus.CREATED).body(newBook); // method 3
     }
@@ -50,7 +49,7 @@ public class TodoController {
 
     // delete a book using the book id
     @DeleteMapping("{id}")
-    public ResponseEntity<?> deleteBookById(@PathVariable Long id) {
+    public ResponseEntity<?> deleteBookById(@PathVariable Long id) { // @PathVariable for URL params
         for (Todo todo : todoList) {
             if (todo.getId() == id) {
                 todoList.remove(todo);
@@ -61,5 +60,6 @@ public class TodoController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Todo Not Found");
 
     }
+
 
 }
